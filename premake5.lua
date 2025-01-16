@@ -12,11 +12,13 @@ project "Arcane"
 	INCLUDE_DIR["STB"] = "Arcane/vendors/stb"
 	INCLUDE_DIR["SPD_LOG"] = "Arcane/vendors/spdlog/include"
 	INCLUDE_DIR["IMGUI"] = "Arcane/vendors/imgui"
+	INCLUDE_DIR["OpenAL"] = "Arcane/vendors/openal-soft/include"
 
 	group "Dependencies"
 		include "Arcane/vendors/glfw"
 		include "Arcane/vendors/glad"
 		include "Arcane/vendors/imgui"
+		include "Arcane/vendors/openal-soft"
 
 	group ""
 	
@@ -44,6 +46,7 @@ project "Arcane"
 		"%{INCLUDE_DIR.GLAD}",
 		"%{INCLUDE_DIR.STB}",
 		"%{INCLUDE_DIR.SPD_LOG}",
+		"%{INCLUDE_DIR.OpenAL}",
 		"%{INCLUDE_DIR.IMGUI}"
 	}
 	
@@ -52,6 +55,7 @@ project "Arcane"
 		"glfw",
 		"glad",
 		"ImGui",
+		"openal-soft",
 		"opengl32.lib"
 	}
 

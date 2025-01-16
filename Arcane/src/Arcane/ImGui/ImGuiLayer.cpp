@@ -33,6 +33,11 @@ namespace Arcane
 		ImGui::CreateContext();
 
 		ImGuiIO& io = ImGui::GetIO();
+
+#ifndef ARC_DEBUG
+        io.IniFilename = NULL;
+#endif
+
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;

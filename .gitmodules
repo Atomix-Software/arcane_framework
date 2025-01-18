@@ -11,3 +11,6 @@
 [submodule "Arcane/vendors/spdlog"]
 	path = Arcane/vendors/spdlog
 	url = https://github.com/gabime/spdlog
+[submodule "Arcane/vendors/openal-soft"]
+	path = Arcane/vendors/openal-soft
+	url = https://github.com/Atomix-Software/openal-soft

@@ -75,17 +75,14 @@ project "Arcane"
 		}
 		
 	filter "configurations:Debug"
-		defines "ARC_DEBUG"
 		runtime "Debug"
 		symbols "on"
 		
 	filter "configurations:Release"
-		defines "ARC_RELEASE"
 		runtime "Release"
 		optimize "on"
 		
 	filter "configurations:Distribution"
-		defines "ARC_DIST"
 		runtime "Release"
 		optimize "on"
 		

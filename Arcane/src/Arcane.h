@@ -14,6 +14,11 @@
 
 #include "Arcane/ImGui/ImGuiLayer.h"
 
+/* Audio Stuffs */
+#include "Arcane/Audio/SoundDevice.h"
+#include "Arcane/Audio/SoundBuffer.h"
+#include "Arcane/Audio/SoundSource.h"
+
 /* Renderer Stuffs */
 #include "Arcane/Render/Renderer.h"
 #include "Arcane/Render/RenderCMD.h"

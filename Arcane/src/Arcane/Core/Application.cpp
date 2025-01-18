@@ -79,16 +79,31 @@ namespace Arcane
 	void Application::Run()
 	{
 		ARC_PROFILE_FUNCTION();
+
+		constexpr float fixedDT = 1.0f / 60.0f;
+		Timestep accumulator(0.0f);
+
+		auto lastTime = std::chrono::high_resolution_clock::now();
+
 		while (m_Running)
 		{
-			float time = (float)glfwGetTime();
-			Timestep timeStep = time - m_LastFrameTime;
-			m_LastFrameTime = time;
+
+			auto currentTime = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<float> elapsedTime = currentTime - lastTime;
+			lastTime = currentTime;
+
+			Timestep deltaTime(elapsedTime.count());
+			accumulator += deltaTime;
 
 			if (!m_Minimized)
 			{
-				for (auto layer : m_LayerStack)
-					layer->OnUpdate(timeStep);
+				while (accumulator >= fixedDT)
+				{
+					for (auto layer : m_LayerStack)
+						layer->OnUpdate(Timestep(fixedDT));
+
+					accumulator -= fixedDT;
+				}
 			}
 
 			m_ImGuiLayer->Begin();
@@ -97,6 +112,12 @@ namespace Arcane
 			m_ImGuiLayer->End();
 
 			m_Window->OnUpdate();
+
+			constexpr float maxFrameRate = 1.0f / 120.0f; // Cap at 120 FPS
+			if (deltaTime < maxFrameRate)
+			{
+				std::this_thread::sleep_for(std::chrono::duration<float>(maxFrameRate - (float)deltaTime));
+			}
 		}
 	}
 

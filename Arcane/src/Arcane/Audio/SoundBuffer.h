@@ -7,9 +7,6 @@
 
 namespace Arcane
 {
-	static const int BUFFER_SAMPLES = 8192;
-	static const int NUM_BUFFERS = 1024;
-
 	class ARC_API SoundLibrary
 	{
 
@@ -22,7 +19,7 @@ namespace Arcane
 		bool Unload(const ALuint& buffer);
 
 	public:
-		static Unique<SoundLibrary> Create();
+		static Shared<SoundLibrary> Create();
 
 	private:
 		std::unordered_map<std::string, ALuint> m_SoundBuffers;
@@ -31,6 +28,10 @@ namespace Arcane
 
 	class ARC_API MusicBuffer
 	{
+	public:
+		static const int BUFFER_SAMPLES = 8192;
+		static const int NUM_BUFFERS = 1024;
+
 	public:
 		MusicBuffer(const std::string& filename);
 		~MusicBuffer();

@@ -18,7 +18,7 @@ namespace Arcane
 		alSource3f(m_SourceId, AL_POSITION, 0, 0, 0);
 		alSource3f(m_SourceId, AL_VELOCITY, 0, 0, 0);
 		alSourcei(m_SourceId, AL_LOOPING, false);
-		alSourcei(m_SourceId, AL_BUFFER, m_BufferId);
+		alSourcei(m_SourceId, AL_BUFFER, (ALint) m_BufferId);
 	}
 
 	SoundSource::~SoundSource()
@@ -31,7 +31,7 @@ namespace Arcane
 		if (buffer != m_BufferId)
 		{
 			m_BufferId = buffer;
-			alSourcei(m_SourceId, AL_BUFFER, m_BufferId);
+			alSourcei(m_SourceId, AL_BUFFER, (ALint) m_BufferId);
 		}
 
 		alSourcePlay(m_SourceId);
@@ -68,7 +68,7 @@ namespace Arcane
 	{
 		if (buffer == m_BufferId) return;
 
-		alSourcei(m_SourceId, AL_BUFFER, m_BufferId);
+		alSourcei(m_SourceId, AL_BUFFER, (ALint) m_BufferId);
 	}
 
 	void SoundSource::SetLooping(const bool& loop)

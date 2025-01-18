@@ -8,9 +8,9 @@
 
 namespace Arcane
 {
-	Unique<SoundLibrary> Arcane::SoundLibrary::Create()
+	Shared<SoundLibrary> Arcane::SoundLibrary::Create()
 	{
-		return CreateUnique<SoundLibrary>();
+		return CreateShared<SoundLibrary>();
 	}
 
 	ALuint SoundLibrary::Load(const std::string& filename)

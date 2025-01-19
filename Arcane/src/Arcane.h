@@ -15,6 +15,10 @@
 #include "Arcane/ImGui/ImGuiLayer.h"
 
 /* Audio Stuffs */
+#include "openal/config.h"
+#include "openal/config_backends.h"
+#include "openal/config_simd.h"
+
 #include "Arcane/Audio/SoundDevice.h"
 #include "Arcane/Audio/SoundBuffer.h"
 #include "Arcane/Audio/SoundSource.h"

@@ -51,20 +51,22 @@ project "Arcane"
 		"%{INCLUDE_DIR.SNDFILE}",
 		"%{INCLUDE_DIR.IMGUI}"
 	}
-	
+
 	links 
 	{
 		"glfw",
 		"glad",
 		"ImGui",
+		"winmm.lib",
+		"openal-soft",
 		"opengl32.lib",
-		"OpenAL",
 		"Arcane/vendors/libsndfile/lib/sndfile.lib",
 	}
 
 	defines 
 	{
-		"GLFW_INCLUDE_NONE"
+		"GLFW_INCLUDE_NONE",
+		"AL_LIBTYPE_STATIC"
 	}
 	
 	filter "system:windows"

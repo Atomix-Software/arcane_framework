@@ -18,7 +18,7 @@ namespace Arcane
 
 		m_ALCcontext = alcCreateContext(m_ALCdevice, nullptr);
 		ARC_CORE_ASSERT(m_ALCcontext, "Failed to set Sound Context!");
-		ARC_CORE_ASSERT(alcMakeContextCurrent(m_ALCcontext), "Failed to make Context Current!");
+		alcMakeContextCurrent(m_ALCcontext);
 
 		const ALCchar* name = nullptr;
 		if (alcIsExtensionPresent(m_ALCdevice, "ALC_ENUMERATE_ALL_EXT"))
@@ -29,9 +29,9 @@ namespace Arcane
 
 	SoundDevice::~SoundDevice()
 	{
-		ARC_CORE_ASSERT(alcMakeContextCurrent(nullptr), "Failed to set Context to nullptr");
-		alcDestroyContext(m_ALCcontext);
-		ARC_CORE_ASSERT(alcCloseDevice(m_ALCdevice), "Failed to close Sound Device!");
+		alcMakeContextCurrent(nullptr);
+		alcDestroyContext(m_ALCcontext); 
+		alcCloseDevice(m_ALCdevice);
 	}
 
 	void SoundDevice::GetLocation(float& x, float& y, float& z)

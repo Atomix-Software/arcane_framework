@@ -1,8 +1,8 @@
-#include "SoundBuffer.h"
 #include <arcpch.h>
 
 #include "Arcane/Audio/SoundBuffer.h"
 
+#include <AL/al.h>
 #include <inttypes.h>
 #include <AL/alext.h>
 

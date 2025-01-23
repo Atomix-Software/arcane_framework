@@ -18,6 +18,8 @@ namespace Arcane
 		bool Unload(const std::string& filename);
 		bool Unload(const ALuint& buffer);
 
+		inline ALuint GetSoundBuffer(const std::string& filename) { return m_SoundBuffers[filename]; }
+
 	public:
 		static Shared<SoundLibrary> Create();
 

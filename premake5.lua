@@ -19,7 +19,6 @@ project "Arcane"
 		include "Arcane/vendors/glfw"
 		include "Arcane/vendors/glad"
 		include "Arcane/vendors/imgui"
-		include "Arcane/vendors/openal-soft"
 
 	group ""
 	
@@ -58,7 +57,7 @@ project "Arcane"
 		"glad",
 		"ImGui",
 		"winmm.lib",
-		"openal-soft",
+		"Arcane/vendors/openal-soft/libs/OpenAL32.lib",
 		"opengl32.lib",
 		"Arcane/vendors/libsndfile/lib/sndfile.lib",
 	}

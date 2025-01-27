@@ -68,12 +68,6 @@ namespace Arcane
         m_SceneData->Rendering = false;
     }
 
-    void Renderer::ResizeViewport(uint32_t width, uint32_t height)
-    {
-        ARC_PROFILE_FUNCTION();
-        RenderCMD::SetViewport(0, 0, width, height);
-    }
-
     void Renderer::Submit(const Shared<Shader>& shader, const Shared<VertexArray>& vao, const Shared<Texture2D>& texture, const glm::vec3 position, const glm::vec3 color, float rotation, float scale)
     {
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *

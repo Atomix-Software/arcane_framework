@@ -73,7 +73,7 @@ namespace Arcane
 		}
 		
 		m_Minimized = false;
-		Renderer::ResizeViewport(e.GetWidth(), e.GetHeight());
+		RenderCMD::SetViewport(e.GetWidth(), e.GetHeight());
 
 		return false;
 	}

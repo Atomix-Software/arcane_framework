@@ -8,6 +8,7 @@
 #include "Arcane/Events/ApplicationEvent.h"
 
 #include "Arcane/Render/Renderer.h"
+#include "Arcane/Render/Renderer2D.h"
 
 #include "Arcane/ImGui/ImGuiLayer.h"
 

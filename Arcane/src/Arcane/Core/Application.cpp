@@ -20,6 +20,7 @@ namespace Arcane
 		m_Window->SetEventCallback(ARC_BIND_EVENT_FN(Application::OnEvent));
 
 		Renderer::Init();
+		Renderer2D::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -29,6 +30,7 @@ namespace Arcane
 	{
 		ARC_PROFILE_FUNCTION();
 		Renderer::Shutdown();
+		Renderer2D::Shutdown();
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -80,7 +82,7 @@ namespace Arcane
 	{
 		ARC_PROFILE_FUNCTION();
 
-		constexpr float fixedDT = 1.0f / 60.0f;
+		constexpr float fixedDT = 1.0f / 120.0f;
 		Timestep accumulator(0.0f);
 
 		auto lastTime = std::chrono::high_resolution_clock::now();
@@ -113,11 +115,11 @@ namespace Arcane
 
 			m_Window->OnUpdate();
 
-			constexpr float maxFrameRate = 1.0f / 120.0f; // Cap at 120 FPS
-			if (deltaTime < maxFrameRate)
-			{
-				std::this_thread::sleep_for(std::chrono::duration<float>(maxFrameRate - (float)deltaTime));
-			}
+			//constexpr float maxFrameRate = 1.0f / 120.0f; // Cap at 120 FPS
+			//if (deltaTime < maxFrameRate)
+			//{
+			//	std::this_thread::sleep_for(std::chrono::duration<float>(maxFrameRate - (float)deltaTime));
+			//}
 		}
 	}
 

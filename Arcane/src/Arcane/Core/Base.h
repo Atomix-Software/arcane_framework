@@ -6,7 +6,13 @@
 
 #ifdef ARC_DEBUG
 	#define ARC_ENABLE_ASSERTS 1
-	#define ARC_PROFILE 1
+
+	#ifdef ARC_PROFILE
+		#define ARC_PROFILE 1
+	#else
+		#define ARC_PROFILE 0
+	#endif
+
 #else
 	#define ARC_ENABLE_ASSERTS 0
 	#define ARC_PROFILE 0

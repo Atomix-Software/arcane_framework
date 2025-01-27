@@ -20,6 +20,7 @@
 
 /* Renderer Stuffs */
 #include "Arcane/Render/Renderer.h"
+#include "Arcane/Render/Renderer2D.h"
 #include "Arcane/Render/RenderCMD.h"
 
 #include "Arcane/Render/Buffer.h"

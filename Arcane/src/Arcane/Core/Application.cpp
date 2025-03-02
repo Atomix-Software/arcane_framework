@@ -19,8 +19,8 @@ namespace Arcane
 		m_Window = Unique<Window>(Window::Create(winProps));
 		m_Window->SetEventCallback(ARC_BIND_EVENT_FN(Application::OnEvent));
 
-		Renderer::Init();
 		Renderer2D::Init();
+		Renderer::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -73,7 +73,7 @@ namespace Arcane
 		}
 		
 		m_Minimized = false;
-		RenderCMD::SetViewport(e.GetWidth(), e.GetHeight());
+		RenderCMD::SetViewport(0, 0, e.GetWidth(), e.GetHeight());
 
 		return false;
 	}

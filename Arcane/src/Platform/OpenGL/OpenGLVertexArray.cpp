@@ -55,7 +55,7 @@ namespace Arcane
 	void OpenGLVertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer>& vertexBuffer)
 	{
 		ARC_PROFILE_FUNCTION();
-		Bind();
+		glBindVertexArray(m_RendererID);
 		vertexBuffer->Bind();
 
 		uint32_t index = 0;

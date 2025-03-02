@@ -23,7 +23,9 @@ namespace Arcane
 		// Window Attributes
 		virtual inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		virtual void SetVSync(bool enabled) override;
+		virtual void SetCaptureMouse(bool capture) override;
 		virtual bool IsVSync() const override;
+		virtual bool CapturesMouse() const override;
 
 		inline virtual void* GetNativeWindow() const override { return m_Window; }
 
@@ -36,7 +38,7 @@ namespace Arcane
 		{
 			std::string Title;
 			unsigned int Width, Height;
-			bool VSync;
+			bool VSync, MouseCapture;
 
 			EventCallbackFn EventCallback;
 		};

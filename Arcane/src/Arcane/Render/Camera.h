@@ -37,6 +37,29 @@ namespace Arcane
 
 	};
 
+	class ARC_API PerspectiveCamera : public Camera
+	{
+	public:
+	public:
+		PerspectiveCamera(float width, float height, float fov);
+
+		void SetProjection(float width, float height, float fov);
+
+		inline void SetSize(float width, float height) { m_Width = width; m_Height = height; SetProjection(m_Width, m_Height, m_FOV); }
+		inline void SetFOV(float fov) { m_FOV = fov; SetProjection(m_Width, m_Height, m_FOV); }
+
+		inline std::tuple<float, float> GetSize() const { return { m_Width, m_Height }; }
+		inline float GetFOV() const { return m_FOV; }
+
+	protected:
+		virtual void UpdateMatrices() override;
+
+	private:
+		float m_Width, m_Height;
+		float m_FOV;
+
+	};
+
 	class ARC_API OrthographicCamera : public Camera
 	{
 	public:

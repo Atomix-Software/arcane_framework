@@ -29,6 +29,36 @@ namespace Arcane
 		else		glDisable(depthTest);
 	}
 
+	void OpenGLRenderAPI::EnableFaceCulling(bool enable)
+	{
+		GLenum cullFace = GL_CULL_FACE;
+		if(enable) glEnable(cullFace);
+		else	   glDisable(cullFace);
+	}
+
+	void OpenGLRenderAPI::SetCullFace(const CullFace& face)
+	{
+		GLenum cullFace;
+
+		switch (face)
+		{
+		case CullFace::FRONT: 
+			cullFace = GL_FRONT;
+			break;
+		case CullFace::BACK:
+			cullFace = GL_BACK;
+			break;
+		case CullFace::FRONT_AND_BACK:
+			cullFace = GL_FRONT_AND_BACK;
+			break;
+		default:
+			cullFace = GL_BACK;
+			break;
+		}
+
+		glCullFace(cullFace);
+	}
+
 	void OpenGLRenderAPI::SetClearColor(const glm::vec4& color)
 	{
 		glClearColor(color.r, color.g, color.b, color.a);

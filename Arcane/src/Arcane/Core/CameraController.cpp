@@ -10,7 +10,7 @@ namespace Arcane
 	/* POV Camera (3D) Controller */
 
 	POVCameraController::POVCameraController(uint32_t width, uint32_t height, float fov) :
-		m_Position({ 0, 0, 0 }), m_Rotation({ 0, 90, 0 }), m_Speed(1.5f), m_CanMove(true)
+		m_Position({ 0, 0, 0 }), m_Rotation({ 0, -90, 0 }), m_Speed(1.5f), m_CanMove(true)
 	{
 		m_Camera = CreateShared<PerspectiveCamera>((float)width, (float)height, fov);
 		m_Camera->SetPosition(m_Position);

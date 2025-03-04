@@ -1,7 +1,10 @@
 #pragma once
 
 #include <Arcane/Core/Base.h>
-#include <Arcane/Render/Renderer.h>
+
+#include <Arcane/Render/Shader.h>
+#include <Arcane/Render/Texture.h>
+#include <Arcane/Render/VertexArray.h>
 
 namespace Arcane
 {

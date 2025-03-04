@@ -13,7 +13,6 @@ namespace Arcane
 
 		Shared<IndexBuffer> ebo = IndexBuffer::Create(indices.data(), (uint32_t)indices.size());
 		m_VAO->SetIndexBuffer(ebo);
-		m_VAO->Unbind();
 	}
 
 	Model::Model(const Material& material, const Shared<Mesh> mesh) :

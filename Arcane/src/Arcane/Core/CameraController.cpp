@@ -16,38 +16,39 @@ namespace Arcane
 
 	void OrthoCameraController::OnUpdate(Timestep ts)
 	{
+
 		m_Position = m_Camera->GetPosition();
 		m_Rotation = m_Camera->GetZRotation();
 
 		if (m_CanMove)
 		{
 
-			if (Input::IsKeyPressed(Key::W))
+			if (Input::IsKeyPressed(Key::Up))
 			{
 				m_Position.x += -sin(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 				m_Position.y += cos(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 			}
-			else if (Input::IsKeyPressed(Key::S))
+			else if (Input::IsKeyPressed(Key::Down))
 			{
 				m_Position.x -= -sin(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 				m_Position.y -= cos(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 			}
 
-			if (Input::IsKeyPressed(Key::A))
+			if (Input::IsKeyPressed(Key::Left))
 			{
 				m_Position.x -= cos(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 				m_Position.y -= sin(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 			}
-			else if (Input::IsKeyPressed(Key::D))
+			else if (Input::IsKeyPressed(Key::Right))
 			{
 				m_Position.x += cos(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 				m_Position.y += sin(glm::radians(m_Camera->GetZRotation())) * m_Speed * ts;
 			}
 
 			float rotationSpeed = m_Speed * 20.0f;
-			if (Input::IsKeyPressed(Key::Q))
+			if (Input::IsKeyPressed(Key::RightShift))
 				m_Rotation += rotationSpeed * ts;
-			else if (Input::IsKeyPressed(Key::E))
+			else if (Input::IsKeyPressed(Key::RightControl))
 				m_Rotation -= rotationSpeed * ts;
 		}
 
@@ -91,10 +92,14 @@ namespace Arcane
 
 	bool OrthoCameraController::OnMouseScrolled(MouseScrolledEvent& event)
 	{
-		m_Camera->SetZoom(m_Camera->GetZoom() - event.GetYOffset() * 0.07f);
+		if (m_CanMove)
+		{
+			m_Camera->SetZoom(m_Camera->GetZoom() - event.GetYOffset() * 0.07f);
 
-		float zoom = m_Camera->GetZoom();
-		m_Camera->SetProjection(-m_AspectRatio * zoom, m_AspectRatio * zoom, -zoom, zoom);
+			float zoom = m_Camera->GetZoom();
+			m_Camera->SetProjection(-m_AspectRatio * zoom, m_AspectRatio * zoom, -zoom, zoom);
+		}
+
 		return false;
 	}
 }

@@ -108,12 +108,14 @@ namespace Arcane
         s_Data.TextureShader->Bind();
         s_Data.TextureShader->SetMat4("u_ProjectionView", camera.GetProjectionView());
 
+        RenderCMD::EnableDepthTesting(false);
         StartBatch();
     }
 
     void Renderer2D::EndScene()
     {
         Flush();
+        RenderCMD::EnableDepthTesting(true);
     }
 
     void Renderer2D::StartBatch()

@@ -24,6 +24,7 @@ namespace Arcane
 		inline const Shared<OrthographicCamera>& GetCamera() { return m_Camera; }
 		inline glm::vec3& GetPosition() { return m_Position; }
 
+		inline const glm::vec3& GetPosition() const { return m_Position; }
 		inline const float GetRotation() const { return m_Rotation; }
 		
 		inline const float GetAspectRatio() const { return m_AspectRatio; }
@@ -32,6 +33,13 @@ namespace Arcane
 		inline const float CanMove() const { return m_CanMove; }
 
 		inline void SetSpeed(float speed) { m_Speed = speed; }
+
+		inline void SetZoom(float zoom) 
+		{ 
+			m_Camera->SetZoom(zoom);
+			m_Camera->SetProjection(-m_AspectRatio * zoom, m_AspectRatio * zoom, -zoom, zoom);
+		}
+
 		inline void SetCanMove(bool canMove) { m_CanMove = canMove; }
 
 	private:
@@ -40,8 +48,8 @@ namespace Arcane
 
 	private:
 		glm::vec3 m_Position;
-		float m_Rotation;
-		float m_AspectRatio, m_Speed;
+		float m_Rotation, m_Speed;
+		float m_AspectRatio;
 		bool m_CanMove;
 
 		Shared<OrthographicCamera> m_Camera;

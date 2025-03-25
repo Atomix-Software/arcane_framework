@@ -42,6 +42,7 @@ namespace Arcane
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
 		glTextureStorage2D(m_RendererID, 1, m_InternalFormat, m_Width, m_Height);
 
+		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 

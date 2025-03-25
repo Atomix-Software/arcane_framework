@@ -8,6 +8,12 @@
 
 namespace Arcane
 {
+	enum ARC_API CullFace : uint32_t
+	{
+		BACK = 0, FRONT,
+		FRONT_AND_BACK,
+	};
+
 	class ARC_API RenderAPI
 	{
 	public:
@@ -24,7 +30,9 @@ namespace Arcane
 		virtual void Clear(bool clearDepth) = 0;
 		
 		virtual void EnableDepthTesting(bool enable) = 0;
+		virtual void EnableFaceCulling(bool enable) = 0;
 
+		virtual void SetCullFace(const CullFace& face) = 0;
 		virtual void SetClearColor(const glm::vec4& color) = 0;
 		virtual void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height) = 0;
 

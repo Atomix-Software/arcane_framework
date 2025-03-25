@@ -63,6 +63,8 @@ namespace Arcane
 		m_Context->Init();
 
 		SetVSync(true);
+		SetCaptureMouse(props.CaptureMouse);
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		glfwShowWindow(m_Window);
 
@@ -159,6 +161,7 @@ namespace Arcane
 	void OpenGLWindow::Shutdown()
 	{
 		ARC_PROFILE_FUNCTION();
+
 		glfwDestroyWindow(m_Window);
 		--s_GLFWwindowCount;
 
@@ -169,6 +172,7 @@ namespace Arcane
 	void OpenGLWindow::OnUpdate()
 	{
 		ARC_PROFILE_FUNCTION();
+
 		glfwPollEvents();
 		m_Context->SwapBuffers();
 	}
@@ -176,17 +180,31 @@ namespace Arcane
 	void OpenGLWindow::SetVSync(bool enabled)
 	{
 		ARC_PROFILE_FUNCTION();
-		if (enabled)
-			glfwSwapInterval(1);
-		else
-			glfwSwapInterval(0);
+
+		if (enabled) glfwSwapInterval(1);
+		else glfwSwapInterval(0);
 
 		m_Data.VSync = enabled;
+	}
+
+	void OpenGLWindow::SetCaptureMouse(bool capture)
+	{
+		ARC_PROFILE_FUNCTION();
+
+		if(capture) glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+		else glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+		m_Data.MouseCapture = capture;
 	}
 
 	bool OpenGLWindow::IsVSync() const
 	{
 		return m_Data.VSync;
+	}
+
+	bool OpenGLWindow::CapturesMouse() const
+	{
+		return m_Data.MouseCapture;
 	}
 
 }

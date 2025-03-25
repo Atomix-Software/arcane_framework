@@ -13,9 +13,10 @@ namespace Arcane
 		uint32_t Width;
 		uint32_t Height;
 		bool Resizable;
+		bool CaptureMouse;
 
-		WindowProps(const std::string& title = "Arcane Engine", uint32_t width = 1280, uint32_t height = 720, bool resizable = false) :
-			Title(title), Width(width), Height(height), Resizable(resizable) {}
+		WindowProps(const std::string& title = "Arcane Engine", uint32_t width = 1280, uint32_t height = 720, bool resizable = false, bool captureMouse = false) :
+			Title(title), Width(width), Height(height), Resizable(resizable), CaptureMouse(captureMouse) {}
 	};
 
 	class ARC_API Window
@@ -35,7 +36,9 @@ namespace Arcane
 		// Window Attributes
 		virtual void SetEventCallback(const EventCallbackFn& callback) = 0;
 		virtual void SetVSync(bool enabled) = 0;
+		virtual void SetCaptureMouse(bool capture) = 0;
 		virtual bool IsVSync() const = 0;
+		virtual bool CapturesMouse() const = 0;
 
 		virtual void* GetNativeWindow() const = 0;
 

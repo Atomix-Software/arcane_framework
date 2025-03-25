@@ -3,15 +3,22 @@
 #include "Arcane/Render/Renderer.h"
 
 #include <glad/glad.h>
+#include <glm/ext.hpp>
 
 namespace Arcane
 {
-    /* 3D Renderer */
-	Renderer::SceneData* Renderer::m_SceneData = new Renderer::SceneData();
+    struct RenderData3D
+    {
+        std::map<Shared<Shader>, std::vector<std::pair<Shared<Model>, glm::mat4>>> ShaderModelMap;
+        std::vector<Shared<Shader>> Shaders;
+    };
+
+    static RenderData3D s_Data;
 
     void Renderer::Init()
     {
         ARC_PROFILE_FUNCTION();
+
         RenderCMD::Init();
     }
 
@@ -20,89 +27,176 @@ namespace Arcane
         ARC_PROFILE_FUNCTION();
     }
 
-    void Renderer::BeginScene(OrthographicCamera& camera)
+    void Renderer::BeginScene(PerspectiveCamera& camera)
     {
         ARC_PROFILE_FUNCTION();
-        ARC_CORE_ASSERT(!m_SceneData->Rendering, "Must call EndScene before BeginScene!");
 
-        m_SceneData->ShaderCount = 0;
-        m_SceneData->ObjectCount = 0;
-
-        m_SceneData->ProjectionView = camera.GetProjectionView();
-        m_SceneData->Rendering = true;
+        for (auto shader : s_Data.Shaders)
+        {
+            shader->Bind();
+            shader->SetMat4("u_ProjectionView", camera.GetProjectionView());
+        }
     }
 
     void Renderer::EndScene()
     {
         ARC_PROFILE_FUNCTION();
-        ARC_CORE_ASSERT(m_SceneData->Rendering, "Must call BeginScene before EndScene!");
 
-        for (auto& shader : m_SceneData->Shaders)
+        for (auto& shader : s_Data.Shaders)
         {
+            if (s_Data.ShaderModelMap.empty() || !s_Data.ShaderModelMap.contains(shader))
+                continue;
+
             shader->Bind();
-            shader->SetMat4("u_ProjectionView", m_SceneData->ProjectionView);
-            const auto& objects = m_SceneData->Objects[shader];
-            for (const auto& [vao, data] : objects)
+            for (auto& [model, transform] : s_Data.ShaderModelMap[shader])
             {
-                int textureCount = 0;
-                if (data->Texture != nullptr)
-                {
-                    shader->SetInt("u_Texture", textureCount);
-                    data->Texture->Bind(textureCount);
-                    textureCount++;
-                }
-                else
-                {
-                    shader->SetFloat3("u_Color", data->Color);
-                }
+                shader->SetFloat3("u_Color", model->GetMaterial().Color);
 
-                shader->SetMat4("u_Model", data->Transform);
+                bool textured = model->GetMaterial().Texture != nullptr;
+                shader->SetBool("u_Textured", textured);
+                shader->SetInt("u_Texture", 0);
 
-                vao->Bind();
-                RenderCMD::DrawIndexed(vao);
+                if (textured)
+                    model->GetMaterial().Texture->Bind();
+
+                shader->SetMat4("u_Model", transform);
+                RenderCMD::DrawIndexed(model->GetMesh()->GetVAO());
             }
+            s_Data.ShaderModelMap[shader].clear();
         }
 
-        m_SceneData->Shaders.clear();
-        m_SceneData->Objects.clear();
-        m_SceneData->Rendering = false;
     }
 
-    void Renderer::ResizeViewport(uint32_t width, uint32_t height)
+    void Renderer::DrawCube(Material& material, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
     {
-        ARC_PROFILE_FUNCTION();
-        RenderCMD::SetViewport(0, 0, width, height);
+        glm::mat4 transform = glm::translate(glm::mat4(1.0), position) *
+            glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), { 1, 0, 0 }) *
+            glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), { 0, 1, 0 }) *
+            glm::rotate(glm::mat4(1.0), glm::radians(rotation.z), { 0, 0, 1 }) *
+            glm::scale(glm::mat4(1.0), scale);
+
+        DrawCube(material, transform);
     }
 
-    void Renderer::Submit(const Shared<Shader>& shader, const Shared<VertexArray>& vao, const Shared<Texture2D>& texture, const glm::vec3 position, const glm::vec3 color, float rotation, float scale)
+    void Renderer::DrawCube(Material& material, glm::mat4& transform)
     {
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
-            glm::rotate(glm::mat4(1.0), glm::radians(rotation), glm::vec3(0, 0, 1)) *
-            glm::scale(glm::mat4(1.0), glm::vec3(scale));
-
-        Submit(shader, vao, texture, color, transform);
+        Shared<Model> cube = Shared<Model>(MakeCube(material));
+        s_Data.ShaderModelMap[material.Shader].push_back(std::pair<Shared<Model>, glm::mat4>(cube, transform));
     }
 
-    void Renderer::Submit(const Shared<Shader>& shader, const Shared<VertexArray>& vao, const Shared<Texture2D>& texture, const glm::vec3 color, const glm::mat4& transform)
+    void Renderer::DrawPlane(Material& material, const glm::vec3& position, const glm::vec3& rotation, const glm::vec3& scale)
     {
-        ARC_PROFILE_FUNCTION();
-        ARC_CORE_ASSERT(m_SceneData->Rendering, "Must call BeginScene before Submit!");
+        glm::mat4 transform = glm::translate(glm::mat4(1.0), position) *
+            glm::rotate(glm::mat4(1.0), glm::radians(rotation.x), { 1, 0, 0 }) *
+            glm::rotate(glm::mat4(1.0), glm::radians(rotation.y), { 0, 1, 0 }) *
+            glm::rotate(glm::mat4(1.0), glm::radians(rotation.z), { 0, 0, 1 }) *
+            glm::scale(glm::mat4(1.0), scale);
 
-        // Add shader if not already in the list
-        if (std::find(m_SceneData->Shaders.begin(), m_SceneData->Shaders.end(), shader) == m_SceneData->Shaders.end())
-        {
-            m_SceneData->Shaders.push_back(shader);
-            m_SceneData->ShaderCount++;
-        }
+        DrawPlane(material, transform);
+    }
 
-        RenderData* data = new RenderData();
-        data->Texture = texture;
-        data->Transform = transform;
-        data->Color = color;
+    void Renderer::DrawPlane(Material& material, glm::mat4& transform)
+    {
+        Shared<Model> plane = Shared<Model>(MakePlane(material));
+        s_Data.ShaderModelMap[material.Shader].push_back(std::pair<Shared<Model>, glm::mat4>(plane, transform));
+    }
 
-        // Associate the VAO and transform with the shader
-        m_SceneData->Objects[shader].emplace_back(vao, data);
-        m_SceneData->ObjectCount++;
+    void Renderer::AddShader(Shared<Shader> shader)
+    {
+        s_Data.Shaders.push_back(shader);
+    }
+
+    Model* Renderer::MakePlane(Material& material)
+    {
+        std::vector<float> vertices = {
+            -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+             0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+             0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+            -0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
+
+             0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
+            -0.5f, -0.5f, 0.0f, 1.0f, 0.0f,
+            -0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
+             0.5f,  0.5f, 0.0f, 0.0f, 1.0f
+        };
+
+        std::vector<uint32_t> indices = {
+            0, 1, 2,
+            0, 2, 3,
+            4, 5, 6,
+            4, 6, 7
+        };
+
+        BufferLayout layout = {
+            { ShaderDataType::Float3, "a_Position" },
+            { ShaderDataType::Float2, "a_TexCoord" }
+        };
+
+        Shared<Mesh> mesh = CreateShared<Mesh>(vertices, indices, layout);
+        return new Model(material, mesh);
+    }
+
+    Model* Renderer::MakeCube(Material& material)
+    {
+        std::vector<float> vertices = {
+               -0.5f, -0.5f,  0.0f, 0.0f, 0.0f,
+                0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
+                0.5f,  0.5f,  0.0f, 1.0f, 1.0f,
+               -0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
+
+                0.5f, -0.5f,  0.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, -1.0f, 1.0f, 0.0f,
+                0.5f,  0.5f, -1.0f, 1.0f, 1.0f,
+                0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
+
+                0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+               -0.5f, -0.5f, -1.0f, 1.0f, 0.0f,
+               -0.5f,  0.5f, -1.0f, 1.0f, 1.0f,
+                0.5f,  0.5f, -1.0f, 0.0f, 1.0f,
+
+               -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+               -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,
+               -0.5f,  0.5f,  0.0f, 1.0f, 1.0f,
+               -0.5f,  0.5f, -1.0f, 0.0f, 1.0f,
+
+               -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,
+                0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
+                0.5f,  0.5f, -1.0f, 1.0f, 1.0f,
+               -0.5f,  0.5f, -1.0f, 0.0f, 1.0f,
+
+               -0.5f, -0.5f, -1.0f, 0.0f, 0.0f,
+                0.5f, -0.5f, -1.0f, 1.0f, 0.0f,
+                0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
+               -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,
+        };
+
+        std::vector<uint32_t> indices = {
+            0, 1, 2,
+            0, 2, 3,
+
+            4, 5, 6,
+            4, 6, 7,
+
+            8, 9, 10,
+            8, 10, 11,
+
+            12, 13, 14,
+            12, 14, 15,
+
+            16, 17, 18,
+            16, 18, 19,
+
+            20, 21, 22,
+            20, 22, 23
+        };
+
+        BufferLayout layout = {
+            { ShaderDataType::Float3, "a_Position" },
+            { ShaderDataType::Float2, "a_TexCoord" }
+        };
+
+        Shared<Mesh> mesh = CreateShared<Mesh>(vertices, indices, layout);
+        return new Model(material, mesh);
     }
 
 }

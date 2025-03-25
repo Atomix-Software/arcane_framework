@@ -86,7 +86,7 @@ namespace Arcane
         for (int i = 0; i < RenderData2D::Max_TextureSlots; ++i)
             samplers[i] = i;
 
-        s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
+        s_Data.TextureShader = Shader::Create("assets/shaders/Batch.glsl");
         s_Data.TextureShader->Bind();
         s_Data.TextureShader->SetIntArray("u_Textures", (int*)samplers, RenderData2D::Max_TextureSlots);
 

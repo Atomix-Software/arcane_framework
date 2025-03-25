@@ -4,6 +4,7 @@
 
 namespace Arcane
 {
+
 	class ARC_API RenderCMD
 	{
 	public:
@@ -20,6 +21,16 @@ namespace Arcane
 		inline static void EnableDepthTesting(bool enable)
 		{
 			s_RenderAPI->EnableDepthTesting(enable);
+		}
+
+		inline static void EnableFaceCulling(bool enable)
+		{
+			s_RenderAPI->EnableFaceCulling(enable);
+		}
+
+		inline static void SetCullFace(const CullFace& face)
+		{
+			s_RenderAPI->SetCullFace(face);
 		}
 
 		inline static void SetClearColor(const glm::vec4& color)

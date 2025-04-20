@@ -7,7 +7,7 @@
 namespace Arcane
 {
 	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height) :
-		m_Width(width), m_Height(height), m_InternalFormat(GL_RGBA8), m_DataFormat(GL_RGBA)
+		m_Width(width), m_Height(height), m_InternalFormat(GL_RGBA8), m_DataFormat(GL_RGBA), m_Data(nullptr)
 	{
 		ARC_PROFILE_FUNCTION();
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_RendererID);
@@ -33,6 +33,7 @@ namespace Arcane
 		}
 		ARC_CORE_ASSERT(data, "Failed to load image!");
 
+		m_Data = data;
 		m_Width = width;
 		m_Height = height;
 
@@ -48,7 +49,7 @@ namespace Arcane
 
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTextureParameteri(m_RendererID, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, m_Data);
 
 		stbi_image_free(data);
 	}
@@ -69,6 +70,7 @@ namespace Arcane
 	void OpenGLTexture2D::SetData(void* data, uint32_t size)
 	{
 		ARC_PROFILE_FUNCTION();
-		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+		m_Data = (unsigned char*)data;
+		glTextureSubImage2D(m_RendererID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, m_Data);
 	}
 }

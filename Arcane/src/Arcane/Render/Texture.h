@@ -13,6 +13,8 @@ namespace Arcane
 
 		virtual void SetData(void* data, uint32_t size) = 0;
 
+		virtual unsigned char* GetData() const = 0;
+
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeight() const = 0;
 		virtual uint32_t GetRendererID() const = 0;

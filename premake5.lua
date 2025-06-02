@@ -6,13 +6,13 @@ project "Arcane"
 	staticruntime "on"
 
 	INCLUDE_DIR = {}
-	INCLUDE_DIR["GLFW"] = "Arcane/vendors/glfw/include"
-	INCLUDE_DIR["GLM"] = "Arcane/vendors/glm"
-	INCLUDE_DIR["GLAD"] = "Arcane/vendors/glad/include"
-	INCLUDE_DIR["STB"] = "Arcane/vendors/stb"
+	INCLUDE_DIR["GLFW"]    = "Arcane/vendors/glfw/include"
+	INCLUDE_DIR["GLM"]     = "Arcane/vendors/glm"
+	INCLUDE_DIR["GLAD"]    = "Arcane/vendors/glad/include"
+	INCLUDE_DIR["STB"]     = "Arcane/vendors/stb"
 	INCLUDE_DIR["SPD_LOG"] = "Arcane/vendors/spdlog/include"
-	INCLUDE_DIR["IMGUI"] = "Arcane/vendors/imgui"
-	INCLUDE_DIR["OpenAL"] = "Arcane/vendors/openal-soft/include"
+	INCLUDE_DIR["IMGUI"]   = "Arcane/vendors/imgui"
+	INCLUDE_DIR["OpenAL"]  = "Arcane/vendors/openal-soft/include"
 	INCLUDE_DIR["SNDFILE"] = "Arcane/vendors/libsndfile/include"
 
 	group "Dependencies"
@@ -57,8 +57,8 @@ project "Arcane"
 		"glad",
 		"ImGui",
 		"winmm.lib",
-		"Arcane/vendors/openal-soft/libs/OpenAL32.lib",
 		"opengl32.lib",
+		"Arcane/vendors/openal-soft/libs/OpenAL32.lib",
 		"Arcane/vendors/libsndfile/lib/sndfile.lib",
 	}
 
@@ -83,8 +83,3 @@ project "Arcane"
 	filter "configurations:Release"
 		runtime "Release"
 		optimize "on"
-		
-	filter "configurations:Distribution"
-		runtime "Release"
-		optimize "on"
-		

@@ -8,6 +8,3 @@
 [submodule "Arcane/vendors/glfw"]
 	path = Arcane/vendors/glfw
 	url = https://github.com/Atomix-Software/glfw
-[submodule "Arcane/vendors/spdlog"]
-	path = Arcane/vendors/spdlog
-	url = https://github.com/gabime/spdlog

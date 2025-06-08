@@ -81,4 +81,11 @@ namespace Arcane
 		uint32_t count = indexCount != 0 ? indexCount : vao->GetIndexBuffer()->GetCount();
 		glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, nullptr);
 	}
+
+	void OpenGLRenderAPI::DrawInstanced(const Shared<VertexArray>& vao, uint32_t amount, uint32_t indexCount)
+	{
+		vao->Bind();
+		uint32_t count = indexCount != 0 ? indexCount : vao->GetIndexBuffer()->GetCount();
+		glDrawElementsInstanced(GL_TRIANGLES, count, GL_UNSIGNED_INT, 0, amount);
+	}
 }

@@ -38,6 +38,7 @@ namespace Arcane
 
 		virtual void DrawArrays(const Shared<VertexArray>& vao, uint32_t first, uint32_t count) = 0;
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vao, uint32_t count) = 0;
+		virtual void DrawInstanced(const Shared<VertexArray>& vao, uint32_t amount, uint32_t indexCount) = 0;
 
 		inline static API GetAPI() { return s_API; }
 	private:

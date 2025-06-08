@@ -30,6 +30,18 @@ namespace Arcane
 		return nullptr;
 	}
 
+	Shared<VertexBuffer> VertexBuffer::Create(const void* data, uint32_t size)
+	{
+		switch (RenderAPI::GetAPI())
+		{
+		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+		case RenderAPI::API::OpenGL: return CreateShared<OpenGLVertexBuffer>(data, size);
+		}
+
+		ARC_CORE_ASSERT(false, "Unknown API selected!");
+		return nullptr;
+	}
+
 	Shared<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
 		switch (RenderAPI::GetAPI())

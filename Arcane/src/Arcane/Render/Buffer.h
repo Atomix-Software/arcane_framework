@@ -1,5 +1,7 @@
 #pragma once
 
+#include <glm/matrix.hpp>
+
 #include "Arcane/Core/Base.h"
 
 namespace Arcane
@@ -40,12 +42,15 @@ namespace Arcane
 		std::string Name;
 		ShaderDataType Type;
 		uint32_t Size;
+		uint32_t IndexOffs;
 		uint32_t Offset;
+		uint32_t Stride;
 		bool Normalized;
+		bool Instanced;
 
 		BufferElement() = default;
-		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false) :
-			Name(name), Type(type), Size(ShaderDataSize(type)), Offset(0), Normalized(normalized) {}
+		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false, bool instanced = false, uint32_t indexOffset = 0, uint32_t offset = 0) :
+			Name(name), Type(type), Size(ShaderDataSize(type)), IndexOffs(indexOffset), Stride(0), Offset(0), Normalized(normalized), Instanced(instanced) { }
 
 		uint32_t GetComponentCount() const
 		{
@@ -81,6 +86,8 @@ namespace Arcane
 		}
 
 		inline uint32_t GetStride() const { return m_Stride; }
+
+		inline std::vector<BufferElement>& GetElements() { return m_Elements; }
 		inline const std::vector<BufferElement>& GetElements() const { return m_Elements; }
 
 		std::vector<BufferElement>::iterator begin() { return m_Elements.begin(); }
@@ -96,8 +103,10 @@ namespace Arcane
 			m_Stride = 0;
 			for (auto& elements : m_Elements)
 			{
-				elements.Offset = offset;
-				offset += elements.Size;
+				if (elements.Offset == 0) // Only overwrite if unset
+					elements.Offset = offset;
+
+				offset = elements.Offset + elements.Size;
 				m_Stride += elements.Size;
 			}
 		}
@@ -116,13 +125,16 @@ namespace Arcane
 		virtual void Bind() const = 0;
 		virtual void Unbind() const = 0;
 
+		virtual BufferLayout& GetLayout() = 0;
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		virtual void SetData(const void* data, uint32_t size) = 0;
+		virtual void SetData(const void* data, uint32_t size, bool dynamic) = 0;
+		virtual void SetSubData(const void* data, uint32_t size) = 0;
 
 		static Shared<VertexBuffer> Create(uint32_t size);
 		static Shared<VertexBuffer> Create(float* vertices, uint32_t size);
+		static Shared<VertexBuffer> Create(const void* data, uint32_t size);
 	};
 
 	class ARC_API IndexBuffer

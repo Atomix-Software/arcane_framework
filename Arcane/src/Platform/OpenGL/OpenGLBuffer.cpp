@@ -1,8 +1,8 @@
 #include <arcpch.h>
 
-#include "Platform/OpenGL/OpenGLBuffer.h"
-
 #include <glad/glad.h>
+
+#include "Platform/OpenGL/OpenGLBuffer.h"
 
 namespace Arcane
 {
@@ -26,6 +26,14 @@ namespace Arcane
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 	}
 
+	OpenGLVertexBuffer::OpenGLVertexBuffer(const void* data, uint32_t size)
+	{
+		ARC_PROFILE_FUNCTION();
+		glCreateBuffers(1, &m_RendererId);
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
+		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
+	}
+
 	OpenGLVertexBuffer::~OpenGLVertexBuffer()
 	{
 		ARC_PROFILE_FUNCTION();
@@ -44,7 +52,14 @@ namespace Arcane
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
-	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size)
+	void OpenGLVertexBuffer::SetData(const void* data, uint32_t size, bool dynamic)
+	{
+		ARC_PROFILE_FUNCTION();
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);
+		glBufferData(GL_ARRAY_BUFFER, size, data, dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+	}
+
+	void OpenGLVertexBuffer::SetSubData(const void* data, uint32_t size)
 	{
 		ARC_PROFILE_FUNCTION();
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererId);

@@ -3,6 +3,7 @@
 #include "Platform/OpenGL/OpenGLVertexArray.h"
 
 #include <glad/glad.h>
+#include <glm/vec4.hpp>
 
 namespace Arcane
 {
@@ -62,12 +63,40 @@ namespace Arcane
 		const auto& layout = vertexBuffer->GetLayout();
 		for (const auto& element : layout)
 		{
+			if (index < element.IndexOffs) index = element.IndexOffs;
+
+			if (element.Type == ShaderDataType::Mat4)
+			{
+				std::size_t vec4Size = sizeof(glm::vec4);
+				for (auto i = 0; i < 4; ++i)
+				{
+					glEnableVertexAttribArray(index + i);
+					glVertexAttribPointer(index + i,
+						4, 
+						ShaderTypeToGLType(element.Type), 
+						element.Normalized ? GL_TRUE : GL_FALSE,
+						layout.GetStride(),
+						(const void*)(sizeof(float) * 4 * i + element.Offset)
+					);
+
+					if (element.Instanced)
+						glVertexAttribDivisor(index + i, 1); // important!
+				}
+
+				index += 4;
+				continue;
+			}
+
 			glEnableVertexAttribArray(index);
 			glVertexAttribPointer(index,
 				element.GetComponentCount(), ShaderTypeToGLType(element.Type),
 				element.Normalized ? GL_TRUE : GL_FALSE,
 				layout.GetStride(),
 				(const void*)((uint64_t) element.Offset));
+
+			if (element.Instanced)
+				glVertexAttribDivisor(index, 1);
+
 			index++;
 		}
 

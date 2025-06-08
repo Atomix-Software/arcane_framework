@@ -48,11 +48,11 @@ namespace Arcane
 
         s_Data.QuadVertexBuffer = VertexBuffer::Create(s_Data.Max_Vertices * sizeof(QuadVertex));
         s_Data.QuadVertexBuffer->SetLayout({
-            { ShaderDataType::Float3, "a_Position" },
-            { ShaderDataType::Float4, "a_Color" },
-            { ShaderDataType::Float2, "a_TexCoord" },
-            { ShaderDataType::Float,  "a_TexIndex" },
-            { ShaderDataType::Float,  "a_TilingFactor" }
+            { ShaderDataType::Float3, "a_Position", 0 },
+            { ShaderDataType::Float4, "a_Color", 0 },
+            { ShaderDataType::Float2, "a_TexCoord", 0 },
+            { ShaderDataType::Float,  "a_TexIndex", 0 },
+            { ShaderDataType::Float,  "a_TilingFactor", 0 }
             });
         s_Data.QuadVertexArray->AddVertexBuffer(s_Data.QuadVertexBuffer);
 
@@ -131,7 +131,7 @@ namespace Arcane
         if (s_Data.QuadIndexCount)
         {
             uint32_t dataSize = (uint32_t)((uint8_t*)s_Data.QuadBufferPtr - (uint8_t*)s_Data.QuadBufferBase);
-            s_Data.QuadVertexBuffer->SetData(s_Data.QuadBufferBase, dataSize);
+            s_Data.QuadVertexBuffer->SetSubData(s_Data.QuadBufferBase, dataSize);
 
             for (uint32_t i = 0; i < s_Data.TextureSlotIndex; ++i)
                 s_Data.TextureSlots[i]->Bind(i);

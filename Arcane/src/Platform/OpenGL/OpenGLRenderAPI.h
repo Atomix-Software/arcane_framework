@@ -21,5 +21,6 @@ namespace Arcane
 
 		virtual void DrawArrays(const Shared<VertexArray>& vao, uint32_t first, uint32_t count) override;
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>& vao, uint32_t count) override;
+		virtual void DrawInstanced(const Shared<VertexArray>& vao, uint32_t amount, uint32_t indexCount) override;
 	};
 }

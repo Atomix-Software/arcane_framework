@@ -53,6 +53,11 @@ namespace Arcane
 			s_RenderAPI->DrawIndexed(vao, indexCount);
 		}
 
+		inline static void DrawInstanced(const Shared<VertexArray>& vao, uint32_t amount = 0, uint32_t indexCount = 0)
+		{
+			s_RenderAPI->DrawInstanced(vao, amount, indexCount);
+		}
+
 	private:
 		static RenderAPI* s_RenderAPI;
 

@@ -44,13 +44,12 @@ namespace Arcane
 		uint32_t Size;
 		uint32_t IndexOffs;
 		uint32_t Offset;
-		uint32_t Stride;
 		bool Normalized;
 		bool Instanced;
 
 		BufferElement() = default;
-		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false, bool instanced = false, uint32_t indexOffset = 0, uint32_t offset = 0) :
-			Name(name), Type(type), Size(ShaderDataSize(type)), IndexOffs(indexOffset), Stride(0), Offset(0), Normalized(normalized), Instanced(instanced) { }
+		BufferElement(ShaderDataType type, const std::string& name, bool normalized = false, bool instanced = false, uint32_t indexOffset = 0) :
+			Name(name), Type(type), Size(ShaderDataSize(type)), IndexOffs(indexOffset), Offset(0), Normalized(normalized), Instanced(instanced) { }
 
 		uint32_t GetComponentCount() const
 		{

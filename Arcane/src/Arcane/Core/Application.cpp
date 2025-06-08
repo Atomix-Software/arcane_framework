@@ -19,8 +19,7 @@ namespace Arcane
 		m_Window = Unique<Window>(Window::Create(winProps));
 		m_Window->SetEventCallback(ARC_BIND_EVENT_FN(Application::OnEvent));
 
-		Renderer2D::Init();
-		Renderer::Init();
+		RenderCMD::Init();
 
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
@@ -29,8 +28,7 @@ namespace Arcane
 	Application::~Application()
 	{
 		ARC_PROFILE_FUNCTION();
-		Renderer::Shutdown();
-		Renderer2D::Shutdown();
+		PopOverlay(m_ImGuiLayer);
 	}
 
 	void Application::PushLayer(Layer* layer)
@@ -43,6 +41,18 @@ namespace Arcane
 	{
 		ARC_PROFILE_FUNCTION();
 		m_LayerStack.PushOverlay(overlay);
+	}
+
+	void Application::PopLayer(Layer* layer)
+	{
+		ARC_PROFILE_FUNCTION();
+		m_LayerStack.PopLayer(layer);
+	}
+
+	void Application::PopOverlay(Layer* overlay)
+	{
+		ARC_PROFILE_FUNCTION();
+		m_LayerStack.PopOverlay(overlay);
 	}
 
 	void Application::OnEvent(Event& e)

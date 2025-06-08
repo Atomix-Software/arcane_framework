@@ -2,7 +2,7 @@
 
 #include "Arcane/Render/Shader.h"
 
-#include "Arcane/Render/Renderer.h"
+#include "Arcane/Render/RenderAPI.h"
 #include "Platform/OpenGL/OpenGLShader.h"
 
 #include <glad/glad.h>
@@ -12,7 +12,7 @@ namespace Arcane
 {
 	Shared<Shader> Shader::Create(const std::string& shaderFile)
 	{
-		switch (Renderer::GetAPI())
+		switch (RenderAPI::GetAPI())
 		{
 		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 		case RenderAPI::API::OpenGL: return CreateShared<OpenGLShader>(shaderFile);
@@ -24,7 +24,7 @@ namespace Arcane
 
 	Shared<Shader> Shader::Create(const std::string& name, const std::string& vertSrc, const std::string& fragSrc)
 	{
-		switch (Renderer::GetAPI())
+		switch (RenderAPI::GetAPI())
 		{
 		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 		case RenderAPI::API::OpenGL: return CreateShared<OpenGLShader>(name, vertSrc, fragSrc);

@@ -7,7 +7,6 @@
 
 #include "Arcane/Events/ApplicationEvent.h"
 
-#include "Arcane/Render/Renderer.h"
 #include "Arcane/Render/Renderer2D.h"
 
 #include "Arcane/ImGui/ImGuiLayer.h"
@@ -28,6 +27,9 @@ namespace Arcane
 
 		void PushLayer(Layer* layer);
 		void PushOverlay(Layer* overlay);
+
+		void PopLayer(Layer* layer);
+		void PopOverlay(Layer* overlay);
 
 		inline void PushEvent(const Event& event) { m_Window->PushEvent((Event&)event); }
 

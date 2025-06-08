@@ -2,7 +2,7 @@
 
 #include "Arcane/Render/Texture.h"
 
-#include "Arcane/Render/Renderer.h"
+#include "Arcane/Render/RenderAPI.h"
 
 #include "Platform/OpenGL/OpenGLTexture.h"
 
@@ -10,7 +10,7 @@ namespace Arcane
 {
 	Shared<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
 	{
-		switch (Renderer::GetAPI())
+		switch (RenderAPI::GetAPI())
 		{
 		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 		case RenderAPI::API::OpenGL: return CreateShared<OpenGLTexture2D>(width, height);
@@ -22,7 +22,7 @@ namespace Arcane
 
 	Shared<Texture2D> Texture2D::Create(const std::string& path)
 	{
-		switch (Renderer::GetAPI())
+		switch (RenderAPI::GetAPI())
 		{
 		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
 		case RenderAPI::API::OpenGL: return CreateShared<OpenGLTexture2D>(path);

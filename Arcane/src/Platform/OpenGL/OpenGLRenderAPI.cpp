@@ -69,6 +69,12 @@ namespace Arcane
 		glViewport(x, y, width, height);
 	}
 
+	void OpenGLRenderAPI::DrawArrays(const Shared<VertexArray>& vao, uint32_t first, uint32_t count)
+	{
+		vao->Bind();
+		glDrawArrays(GL_TRIANGLES, first, count);
+	}
+
 	void OpenGLRenderAPI::DrawIndexed(const std::shared_ptr<VertexArray>& vao, uint32_t indexCount)
 	{
 		vao->Bind();

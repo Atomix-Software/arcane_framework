@@ -43,7 +43,12 @@ namespace Arcane
 			s_RenderAPI->SetViewport(x, y, width, height);
 		}
 
-		inline static void DrawIndexed(const std::shared_ptr<VertexArray>& vao, uint32_t indexCount = 0)
+		inline static void DrawArrays(const Shared<VertexArray>& vao, uint32_t first, uint32_t count)
+		{
+			s_RenderAPI->DrawArrays(vao, first, count);
+		}
+
+		inline static void DrawIndexed(const Shared<VertexArray>& vao, uint32_t indexCount = 0)
 		{
 			s_RenderAPI->DrawIndexed(vao, indexCount);
 		}

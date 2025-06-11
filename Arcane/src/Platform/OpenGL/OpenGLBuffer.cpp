@@ -6,9 +6,7 @@
 
 namespace Arcane
 {
-	/*
-	* Vertex buffer
-	*/
+#pragma region Vertex Buffer
 
 	OpenGLVertexBuffer::OpenGLVertexBuffer(uint32_t size)
 	{
@@ -66,9 +64,69 @@ namespace Arcane
 		glBufferSubData(GL_ARRAY_BUFFER, 0, size, data);
 	}
 
-	/*
-	* Index buffer
-	*/
+#pragma endregion
+
+#pragma region Shader Storage Buffer
+
+	OpenGLSSBuffer::OpenGLSSBuffer(uint32_t size, uint32_t binding)
+	{
+		ARC_PROFILE_FUNCTION();
+		glGenBuffers(1, &m_RendererID);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, size, nullptr, GL_DYNAMIC_DRAW);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, m_RendererID);
+	}
+
+	OpenGLSSBuffer::OpenGLSSBuffer(uint32_t size, const void* data, uint32_t binding)
+	{
+		ARC_PROFILE_FUNCTION();
+		glGenBuffers(1, &m_RendererID);
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID);
+		glBufferData(GL_SHADER_STORAGE_BUFFER, size, data, GL_DYNAMIC_DRAW);
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, m_RendererID);
+	}
+
+	OpenGLSSBuffer::~OpenGLSSBuffer()
+	{
+		ARC_PROFILE_FUNCTION();
+		glDeleteBuffers(1, &m_RendererID);
+	}
+
+	void OpenGLSSBuffer::Bind(uint32_t binding) const
+	{
+		ARC_PROFILE_FUNCTION();
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding, m_RendererID);
+	}
+
+	void OpenGLSSBuffer::Unbind() const
+	{
+		ARC_PROFILE_FUNCTION();
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
+	}
+
+	void OpenGLSSBuffer::SetData(const void* data, uint32_t size, uint32_t offset)
+	{
+		ARC_PROFILE_FUNCTION();
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID);
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, offset, size, data);
+	}
+
+	void* OpenGLSSBuffer::MapBuffer(uint32_t access)
+	{
+		ARC_PROFILE_FUNCTION();
+		glBindBuffer(GL_SHADER_STORAGE_BUFFER, m_RendererID);
+		return glMapBuffer(GL_SHADER_STORAGE_BUFFER, access);
+	}
+
+	void OpenGLSSBuffer::UnmapBuffer()
+	{
+		ARC_PROFILE_FUNCTION();
+		glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+	}
+
+#pragma endregion
+
+#pragma region Index Buffer
 
 	OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t* indices, uint32_t count) :
 		m_Count(count)
@@ -96,4 +154,6 @@ namespace Arcane
 		ARC_PROFILE_FUNCTION();
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
+
+#pragma endregion
 }

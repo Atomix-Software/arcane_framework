@@ -42,6 +42,30 @@ namespace Arcane
 		return nullptr;
 	}
 
+	Shared<ShaderStorageBuffer> ShaderStorageBuffer::Create(uint32_t size, uint32_t binding)
+	{
+		switch (RenderAPI::GetAPI())
+		{
+		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+		case RenderAPI::API::OpenGL: return CreateShared<OpenGLSSBuffer>(size, binding);
+		}
+
+		ARC_CORE_ASSERT(false, "Unknown API selected!");
+		return nullptr;
+	}
+
+	Shared<ShaderStorageBuffer> ShaderStorageBuffer::Create(uint32_t size, const void* data, uint32_t binding)
+	{
+		switch (RenderAPI::GetAPI())
+		{
+		case RenderAPI::API::None: ARC_CORE_ASSERT(false, "RendererAPI::None is not supported!"); return nullptr;
+		case RenderAPI::API::OpenGL: return CreateShared<OpenGLSSBuffer>(size, data, binding);
+		}
+
+		ARC_CORE_ASSERT(false, "Unknown API selected!");
+		return nullptr;
+	}
+
 	Shared<IndexBuffer> IndexBuffer::Create(uint32_t* indices, uint32_t count)
 	{
 		switch (RenderAPI::GetAPI())

@@ -9,6 +9,7 @@ namespace Arcane
 	class ARC_API SubTexture2D
 	{
 	public:
+		SubTexture2D() = default;
 		SubTexture2D(const Shared<Texture2D>& texture, const glm::vec2& min, const glm::vec2& max);
 
 		inline const Shared<Texture2D> GetTexture() const { return m_Texture; }

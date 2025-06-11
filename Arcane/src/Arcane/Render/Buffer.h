@@ -136,6 +136,23 @@ namespace Arcane
 		static Shared<VertexBuffer> Create(const void* data, uint32_t size);
 	};
 
+	class ARC_API ShaderStorageBuffer
+	{
+	public:
+		ShaderStorageBuffer() = default;
+		virtual ~ShaderStorageBuffer() = default;
+
+		virtual void Bind(uint32_t binding = 0) const = 0;
+		virtual void Unbind() const = 0;
+
+		virtual void  SetData(const void* data, uint32_t size, uint32_t offset = 0) = 0;
+		virtual void* MapBuffer(uint32_t access) = 0;
+		virtual void  UnmapBuffer() = 0;
+
+		static Shared<ShaderStorageBuffer> Create(uint32_t size, uint32_t binding = 0);
+		static Shared<ShaderStorageBuffer> Create(uint32_t size, const void* data, uint32_t binding = 0);
+	};
+
 	class ARC_API IndexBuffer
 	{
 	public:

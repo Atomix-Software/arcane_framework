@@ -27,6 +27,24 @@ namespace Arcane
 		BufferLayout m_Layout;
 	};
 
+	class ARC_API OpenGLSSBuffer : public ShaderStorageBuffer
+	{
+	public:
+		OpenGLSSBuffer(uint32_t size, uint32_t binding);
+		OpenGLSSBuffer(uint32_t size, const void* data, uint32_t binding);
+		virtual ~OpenGLSSBuffer();
+
+		virtual void Bind(uint32_t binding = 0) const override;
+		virtual void Unbind() const override;
+
+		virtual void  SetData(const void* data, uint32_t size, uint32_t offset = 0) override;
+		virtual void* MapBuffer(uint32_t access) override;
+		virtual void  UnmapBuffer() override;
+
+	private:
+		uint32_t m_RendererID = 0;
+	};
+
 	class ARC_API OpenGLIndexBuffer : public IndexBuffer
 	{
 	public:

@@ -2,6 +2,7 @@
 
 #include "Arcane/Core/Application.h"
 #include "Arcane/Core/Log.h"
+#include "Arcane/Core/Input.h"
 
 #include <GLFW/glfw3.h>
 
@@ -99,7 +100,6 @@ namespace Arcane
 
 		while (m_Running)
 		{
-
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			std::chrono::duration<float> elapsedTime = currentTime - lastTime;
 			lastTime = currentTime;
@@ -111,13 +111,15 @@ namespace Arcane
 			{
 				while (accumulator >= fixedDT)
 				{
+					Input::Update();
+
 					for (auto layer : m_LayerStack)
 						layer->OnUpdate(Timestep(fixedDT));
 
 					accumulator -= fixedDT;
 				}
 			}
-
+			
 			m_ImGuiLayer->Begin();
 			for (auto layer : m_LayerStack)
 				layer->OnImGuiRender();

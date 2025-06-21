@@ -4,6 +4,7 @@
 
 /* Core Stuffs */
 #include "Arcane/Core/Base.h"
+#include "Arcane/Core/Math.h"
 #include "Arcane/Core/Timestep.h"
 #include "Arcane/Core/Application.h"
 #include "Arcane/Core/CameraController.h"

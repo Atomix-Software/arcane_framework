@@ -7,6 +7,7 @@
 #include "Arcane/Core/Math.h"
 #include "Arcane/Core/Timestep.h"
 #include "Arcane/Core/Application.h"
+#include "Arcane/Core/FastNoiseLite.h"
 #include "Arcane/Core/CameraController.h"
 
 #include "Arcane/Core/Input.h"

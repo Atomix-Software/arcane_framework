@@ -111,7 +111,7 @@ namespace Arcane
 	/* Ortho Camera (2D) Controller */
 
 	OrthoCameraController::OrthoCameraController(float aspectRatio, float zoom) :
-		m_AspectRatio(aspectRatio), m_Position(0.0), m_Rotation(0.0), m_Speed(1.5), m_CanMove(true)
+		m_AspectRatio(aspectRatio), m_Position(0.0), m_Rotation(0.0), m_Speed(1.5), m_ZoomSpeed(1.5), m_CanMove(true)
 	{
 		m_Camera = CreateShared<OrthographicCamera>(-m_AspectRatio * zoom, m_AspectRatio * zoom, -zoom, zoom);
 		m_Camera->SetZoom(zoom);
@@ -176,12 +176,16 @@ namespace Arcane
 	bool OrthoCameraController::InBounds(const glm::vec2& position, const glm::vec2& size)
 	{
 		glm::vec2 halfSize = { size.x / 2.0f, size.y / 2.0f };
-		if (position.x - halfSize.x >= m_Position.x + m_AspectRatio * m_Camera->GetZoom() ||
-			position.x + halfSize.x <= m_Position.x - m_AspectRatio * m_Camera->GetZoom())
+
+		auto width = m_AspectRatio * m_Camera->GetZoom();
+		auto height = m_Camera->GetZoom();
+
+		if (position.x - halfSize.x >= m_Position.x + width ||
+			position.x + halfSize.x <= m_Position.x - width)
 			return false;
 
-		if (position.y - halfSize.y >= m_Position.y + m_Camera->GetZoom() ||
-			position.y + halfSize.y <= m_Position.y - m_Camera->GetZoom())
+		if (position.y - halfSize.y >= m_Position.y + height ||
+			position.y + halfSize.y <= m_Position.y - height)
 			return false;
 
 		return true;
@@ -197,7 +201,7 @@ namespace Arcane
 	{
 		if (m_CanMove)
 		{
-			m_Camera->SetZoom(m_Camera->GetZoom() - event.GetYOffset() * 0.07f);
+			m_Camera->SetZoom(m_Camera->GetZoom() - event.GetYOffset() * m_ZoomSpeed);
 
 			float zoom = m_Camera->GetZoom();
 			m_Camera->SetProjection(-m_AspectRatio * zoom, m_AspectRatio * zoom, -zoom, zoom);

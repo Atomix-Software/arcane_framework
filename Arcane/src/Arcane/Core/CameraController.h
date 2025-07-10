@@ -22,7 +22,10 @@ namespace Arcane
 		inline const Shared<PerspectiveCamera>& GetCamera() { return m_Camera; }
 
 		inline glm::vec3& GetPosition() { return m_Position; }
+		inline const glm::vec3& GetPosition() const { return m_Position; }
+
 		inline glm::vec3& GetRotation() { return m_Rotation; }
+		inline const glm::vec3& GetRotation() const { return m_Rotation; }
 
 		inline float GetSpeed() { return m_Speed; }
 		inline bool CanMove() { return m_CanMove; }
@@ -67,11 +70,25 @@ namespace Arcane
 		inline const float GetRotation() const { return m_Rotation; }
 		
 		inline const float GetAspectRatio() const { return m_AspectRatio; }
+
+		inline float GetZoom() { return m_Camera->GetZoom(); }
 		inline const float GetZoom() const { return m_Camera->GetZoom(); }
+
 		inline const float GetSpeed() const { return m_Speed; }
+		inline const float GetZoomSpeed() const { return m_ZoomSpeed; }
+
 		inline const float CanMove() const { return m_CanMove; }
 
+		inline void SetPosition(const glm::vec3& position) {
+			m_Camera->SetPosition(position);
+		}
+
+		inline void SetRotation(float rotation) {
+			m_Camera->SetZRotation(rotation);
+		}
+
 		inline void SetSpeed(float speed) { m_Speed = speed; }
+		inline void SetZoomSpeed(float speed) { m_ZoomSpeed = speed; }
 
 		inline void SetZoom(float zoom) 
 		{ 
@@ -87,7 +104,8 @@ namespace Arcane
 
 	private:
 		glm::vec3 m_Position;
-		float m_Rotation, m_Speed;
+		float m_Rotation;
+		float m_Speed, m_ZoomSpeed;
 		float m_AspectRatio;
 		bool m_CanMove;
 

@@ -19,13 +19,17 @@ namespace Arcane
 		inline const glm::mat4 GetProjectionView() const { return m_Projection * m_View; }
 		inline const glm::mat4 GetViewProjection() const { return m_View * m_Projection; }
 
+		inline glm::vec3& GetPosition() { return m_Position; }
 		inline const glm::vec3& GetPosition() const { return m_Position; }
+
+		inline glm::vec3& GetRotation() { return m_Rotation; }
 		inline const glm::vec3& GetRotation() const { return m_Rotation; }
+
 		inline const float GetZoom() const { return m_Zoom; }
 
 		inline void SetPosition(const glm::vec3& position) { m_Position = position; UpdateMatrices(); }
 		inline void SetRotation(const glm::vec3& rotation) { m_Rotation = rotation; UpdateMatrices(); }
-		inline void SetZoom(float zoom) { m_Zoom = zoom; m_Zoom = std::clamp(m_Zoom, 0.075f, 2.0f); UpdateMatrices(); }
+		inline void SetZoom(float zoom) { m_Zoom = zoom; m_Zoom = std::clamp(m_Zoom, 0.075f, 100.0f); UpdateMatrices(); }
 
 	protected:
 		virtual void UpdateMatrices() = 0;

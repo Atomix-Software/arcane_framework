@@ -15,7 +15,7 @@ namespace Arcane
 
     struct RenderData2D
     {
-        static const uint32_t Max_Quads = 20000;
+        static const uint32_t Max_Quads = 1500;
         static const uint32_t Max_Vertices = Max_Quads * 4;
         static const uint32_t Max_Indices = Max_Quads * 6;
         static const uint32_t Max_TextureSlots = 32;
@@ -158,11 +158,6 @@ namespace Arcane
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
             glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0f });
 
-        DrawQuad(transform, color);
-    }
-
-    void Renderer2D::DrawQuad(const glm::mat4& transform, const glm::vec4& color)
-    {
         DrawRotatedQuad(transform, color);
     }
 
@@ -176,7 +171,7 @@ namespace Arcane
         glm::mat4 transform = glm::translate(glm::mat4(1.0f), position) *
             glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0f });
 
-        DrawQuad(transform, texture, props);
+        DrawRotatedQuad(transform, texture, props);
     }
 
     void Renderer2D::DrawQuad(const glm::vec2& position, const glm::vec2& size, const Shared<SubTexture2D>& subTexture, const TextureProps& props)
@@ -190,11 +185,6 @@ namespace Arcane
             glm::scale(glm::mat4(1.0), { size.x, size.y, 1.0f });
 
         DrawRotatedQuad(transform, subTexture, props);
-    }
-
-    void Renderer2D::DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const TextureProps& props)
-    {
-        DrawRotatedQuad(transform, texture, props);
     }
 
     void Renderer2D::DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const glm::vec4& color)
@@ -269,7 +259,7 @@ namespace Arcane
                 NextBatch();
 
             textureIndex = (float)s_Data.TextureSlotIndex;
-            s_Data.TextureSlots[(uint32_t)s_Data.TextureSlotIndex] = texture;
+            s_Data.TextureSlots[(size_t)textureIndex] = texture;
             s_Data.TextureSlotIndex++;
         }
 
@@ -327,7 +317,7 @@ namespace Arcane
                 NextBatch();
 
             textureIndex = (float)s_Data.TextureSlotIndex;
-            s_Data.TextureSlots[(uint32_t)s_Data.TextureSlotIndex] = texture;
+            s_Data.TextureSlots[(size_t)textureIndex] = texture;
             s_Data.TextureSlotIndex++;
         }
 

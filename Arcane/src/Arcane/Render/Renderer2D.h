@@ -44,10 +44,6 @@ namespace Arcane
 		static void DrawRotatedQuad(const glm::vec2& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D>& subTexture, const TextureProps& props = TextureProps());
 		static void DrawRotatedQuad(const glm::vec3& position, const glm::vec2& size, float rotation, const Shared<SubTexture2D>& subTexture, const TextureProps& props = TextureProps());
 
-		static void DrawQuad(const glm::mat4& transform, const glm::vec4& color);
-		static void DrawQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const TextureProps& props = TextureProps());
-		static void DrawQuad(const glm::mat4& transform, const Shared<SubTexture2D>& subTexture, const TextureProps& props = TextureProps());
-
 		static void DrawRotatedQuad(const glm::mat4& transform, const glm::vec4& color);
 		static void DrawRotatedQuad(const glm::mat4& transform, const Shared<Texture2D>& texture, const TextureProps& props = TextureProps());
 		static void DrawRotatedQuad(const glm::mat4& transform, const Shared<SubTexture2D>& subTexture, const TextureProps& props = TextureProps());

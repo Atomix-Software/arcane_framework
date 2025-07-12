@@ -127,11 +127,12 @@ namespace Arcane
 
 			m_Window->OnUpdate();
 
-			//constexpr float maxFrameRate = 1.0f / 120.0f; // Cap at 120 FPS
-			//if (deltaTime < maxFrameRate)
-			//{
-			//	std::this_thread::sleep_for(std::chrono::duration<float>(maxFrameRate - (float)deltaTime));
-			//}
+			if (!m_Window->IsVSync())
+			{
+				constexpr float maxFrameRate = 1.0f / 75.0f;
+				if (deltaTime < maxFrameRate)
+					std::this_thread::sleep_for(std::chrono::duration<float>(maxFrameRate - (float)deltaTime));
+			}
 		}
 	}
 
